@@ -100,15 +100,15 @@ function BusinessPage() {
     navigate({ to: "/agenda" });
   };
 
-  if (!biz) return <main className="mx-auto max-w-5xl px-4 py-16 text-muted-foreground">Carregando…</main>;
+  if (!biz) return <main className="mx-auto  px-4 py-6 text-muted-foreground">Carregando…</main>;
 
   return (
-    <main className="mx-auto grid max-w-6xl gap-8 px-4 py-10 lg:grid-cols-[1fr_380px]">
+    <main className="mx-auto grid  gap-8 px-4 py-6">
       <div className="min-w-0 space-y-8">
         <header className="flex animate-rise items-start gap-5 rounded-3xl bg-gradient-hero p-6">
           <span className="grid size-20 shrink-0 place-items-center rounded-3xl bg-card text-5xl shadow-soft">{biz.emoji}</span>
           <div className="flex-1">
-            <h1 className="text-4xl font-semibold">{biz.name}</h1>
+            <h1 className="text-3xl font-semibold">{biz.name}</h1>
             <p className="text-muted-foreground">{biz.category}</p>
             <div className="mt-2 flex flex-wrap gap-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-1"><Star className="size-4 fill-primary text-primary" /> {Number(biz.rating).toFixed(1)}</span>
@@ -126,7 +126,7 @@ function BusinessPage() {
 
         <section>
           <h2 className="text-2xl font-semibold">1. Escolha o serviço</h2>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <div className="mt-4 grid gap-3">
             {services.map((s) => (
               <button
                 key={s.id}
@@ -180,7 +180,7 @@ function BusinessPage() {
           ) : slots.length === 0 ? (
             <p className="mt-3 text-muted-foreground">Sem horários livres neste dia. Tente outro.</p>
           ) : (
-            <div className="mt-4 grid grid-cols-4 gap-2 sm:grid-cols-6">
+            <div className="mt-4 grid grid-cols-3 gap-2">
               {slots.map((t) => (
                 <button
                   key={t}

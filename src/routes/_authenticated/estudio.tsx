@@ -50,8 +50,8 @@ function StudioPage() {
   }, [biz]);
 
   if (role && role !== "professional")
-    return <main className="mx-auto max-w-xl px-4 py-16 text-center text-muted-foreground">Esta área é para contas de profissional.</main>;
-  if (isLoading) return <main className="mx-auto max-w-4xl px-4 py-16 text-muted-foreground">Carregando…</main>;
+    return <main className="mx-auto max-w-xl px-4 py-6 text-center text-muted-foreground">Esta área é para contas de profissional.</main>;
+  if (isLoading) return <main className="mx-auto max-w-4xl px-4 py-6 text-muted-foreground">Carregando…</main>;
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,10 +86,10 @@ function StudioPage() {
   };
 
   return (
-    <main className="mx-auto max-w-5xl space-y-8 px-4 py-10">
+    <main className="mx-auto  space-y-8 px-4 py-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-semibold">Meu espaço</h1>
+          <h1 className="text-3xl font-semibold">Meu espaço</h1>
           <p className="text-muted-foreground">Seu perfil, serviços e horários de atendimento.</p>
         </div>
         {biz && (
@@ -97,7 +97,7 @@ function StudioPage() {
         )}
       </div>
 
-      <form onSubmit={save} className="grid gap-6 rounded-3xl border border-border bg-card p-6 shadow-soft md:grid-cols-2">
+      <form onSubmit={save} className="grid gap-6 rounded-3xl border border-border bg-card p-6 shadow-soft">
         <h2 className="text-2xl font-semibold md:col-span-2">Perfil e horários</h2>
         <div className="space-y-1.5"><Label>Nome do espaço</Label><Input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></div>
         <div className="space-y-1.5"><Label>Categoria</Label><Input value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} /></div>
@@ -146,7 +146,7 @@ function StudioPage() {
           <p className="mt-3 text-muted-foreground">Crie seu espaço acima para cadastrar serviços.</p>
         ) : (
           <>
-            <form onSubmit={addService} className="mt-4 grid gap-3 sm:grid-cols-[1fr_120px_140px_auto]">
+            <form onSubmit={addService} className="mt-4 grid gap-3">
               <Input required placeholder="Nome do serviço" value={svc.name} onChange={(e) => setSvc({ ...svc, name: e.target.value })} />
               <Input required type="number" min={5} step={5} placeholder="Min" value={svc.duration} onChange={(e) => setSvc({ ...svc, duration: e.target.value })} />
               <Input required inputMode="decimal" placeholder="Preço (R$)" value={svc.price} onChange={(e) => setSvc({ ...svc, price: e.target.value })} />

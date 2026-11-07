@@ -55,10 +55,10 @@ function AgendaPage() {
   };
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
-      <h1 className="text-4xl font-semibold">{isPro ? "Agenda do espaço" : "Meus agendamentos"}</h1>
+    <main className="mx-auto max-w-4xl px-4 py-6">
+      <h1 className="text-3xl font-semibold">{isPro ? "Agenda do espaço" : "Meus agendamentos"}</h1>
       {isPro && (
-        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
+        <div className="mt-6 grid grid-cols-2 gap-3">
           <Stat label="Hoje" value={String(data.filter((b) => b.date === today && b.status === "confirmed").length)} />
           <Stat label="Próximos" value={String(data.filter((b) => b.date >= today && b.status === "confirmed").length)} />
           <Stat label="Faturamento hoje" value={brl(revenue)} />

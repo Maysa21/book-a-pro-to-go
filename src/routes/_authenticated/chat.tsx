@@ -128,7 +128,7 @@ function ChatPage() {
   const noOwner = !isPro && bizInfo && !bizInfo.owner_id;
 
   return (
-    <main className="mx-auto grid h-[calc(100vh-4rem)] max-w-6xl gap-4 px-4 py-6 md:grid-cols-[300px_1fr]">
+    <main className="mx-auto grid h-[calc(100dvh-8.5rem)]  gap-4 px-4 py-6">
       <aside className={cn("overflow-y-auto rounded-3xl border border-border bg-card p-3 shadow-soft", ready && "hidden md:block")}>
         <h2 className="px-2 py-2 text-xl font-semibold">Conversas</h2>
         {convs.length === 0 && <p className="px-2 text-sm text-muted-foreground">Nenhuma conversa ainda. Elas aparecem quando há um agendamento.</p>}

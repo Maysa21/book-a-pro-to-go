@@ -12,7 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { AuthProvider } from "@/hooks/use-auth";
-import { AppHeader } from "@/components/AppHeader";
+import { AppHeader, BottomNav } from "@/components/AppHeader";
 import { Toaster } from "@/components/ui/sonner";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -83,7 +83,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     // twitter:image here: every page without its own would inherit the root's preview image.
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+      { name: "theme-color", content: "#f6efe6" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
       { title: "AgendaFácil — agende com profissionais" },
       { name: "description", content: "Agende serviços, gerencie horários e converse com profissionais." },
       { name: "author", content: "AgendaFácil" },
@@ -133,8 +135,11 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <AuthProvider>
-        <AppHeader />
-        <Outlet />
+        <div className="relative mx-auto min-h-screen max-w-md bg-background pb-[calc(5rem+env(safe-area-inset-bottom))] shadow-soft sm:border-x sm:border-border/60">
+          <AppHeader />
+          <Outlet />
+        </div>
+        <BottomNav />
         <Toaster richColors position="top-center" />
       </AuthProvider>
     </QueryClientProvider>

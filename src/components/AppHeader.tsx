@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { CalendarHeart, LogOut, MessageCircle, Store, Compass } from "lucide-react";
+import { CalendarHeart, LogOut, MessageCircle, Store, Compass, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,51 +7,32 @@ import { supabase } from "@/integrations/supabase/client";
 export function AppHeader() {
   const { user, role, profile } = useAuth();
   const navigate = useNavigate();
-  const link =
-    "flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground";
-  const active = { className: "bg-accent text-accent-foreground" };
+  const name = profile?.full_name || user?.email || "";
+  const initial = name.charAt(0).toUpperCase() || "?";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-lg">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="grid size-9 place-items-center rounded-xl bg-gradient-warm text-primary-foreground shadow-glow">
-            <CalendarHeart className="size-5" />
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/90 pt-[env(safe-area-inset-top)] backdrop-blur-lg">
+      <div className="grid h-14 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4">
+        <Link to="/" className="flex min-w-0 items-center gap-2">
+          <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-gradient-warm text-primary-foreground shadow-glow">
+            <CalendarHeart className="size-4" />
           </span>
-          <span className="font-display text-xl font-semibold">AgendaFácil</span>
-        </Link>
-        <nav className="flex items-center gap-1">
-          <Link to="/" className={link} activeProps={active} activeOptions={{ exact: true }}>
-            <Compass className="size-4" />
-            <span className="hidden sm:inline">Explorar</span>
-          </Link>
-          {user && (
-            <>
-              <Link to="/agenda" className={link} activeProps={active}>
-                <CalendarHeart className="size-4" />
-                <span className="hidden sm:inline">Agenda</span>
-              </Link>
-              {role === "professional" && (
-                <Link to="/estudio" className={link} activeProps={active}>
-                  <Store className="size-4" />
-                  <span className="hidden sm:inline">Meu espaço</span>
-                </Link>
-              )}
-              <Link to="/chat" className={link} activeProps={active}>
-                <MessageCircle className="size-4" />
-                <span className="hidden sm:inline">Chat</span>
-              </Link>
-            </>
-          )}
-        </nav>
-        {user ? (
-          <div className="flex items-center gap-2">
-            <div className="hidden text-right md:block">
-              <p className="text-sm font-semibold leading-tight">{profile?.full_name || user.email}</p>
-              <p className="text-xs text-muted-foreground">
+          {user ? (
+            <span className="min-w-0">
+              <span className="block truncate text-sm font-semibold leading-tight">Olá, {name.split(" ")[0]}</span>
+              <span className="block text-xs text-muted-foreground">
                 {role === "professional" ? "Profissional" : "Cliente"}
-              </p>
-            </div>
+              </span>
+            </span>
+          ) : (
+            <span className="truncate font-display text-lg font-semibold">AgendaFácil</span>
+          )}
+        </Link>
+        {user ? (
+          <div className="flex shrink-0 items-center gap-1">
+            <span className="grid size-8 place-items-center rounded-full bg-accent text-sm font-semibold text-accent-foreground">
+              {initial}
+            </span>
             <Button
               variant="ghost"
               size="icon"
@@ -71,5 +52,46 @@ export function AppHeader() {
         )}
       </div>
     </header>
+  );
+}
+
+export function BottomNav() {
+  const { user, role } = useAuth();
+  const item =
+    "flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-medium text-muted-foreground transition-colors";
+  const active = { className: "text-primary" };
+
+  return (
+    <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md border-t border-border/60 bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-lg">
+      <div className="flex h-16 items-stretch">
+        <Link to="/" className={item} activeProps={active} activeOptions={{ exact: true }}>
+          <Compass className="size-6" />
+          Início
+        </Link>
+        {user ? (
+          <>
+            <Link to="/agenda" className={item} activeProps={active}>
+              <CalendarHeart className="size-6" />
+              Agenda
+            </Link>
+            <Link to="/chat" className={item} activeProps={active}>
+              <MessageCircle className="size-6" />
+              Chat
+            </Link>
+            {role === "professional" && (
+              <Link to="/estudio" className={item} activeProps={active}>
+                <Store className="size-6" />
+                Meu espaço
+              </Link>
+            )}
+          </>
+        ) : (
+          <Link to="/auth" className={item} activeProps={active}>
+            <UserRound className="size-6" />
+            Entrar
+          </Link>
+        )}
+      </div>
+    </nav>
   );
 }

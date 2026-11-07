@@ -41,12 +41,12 @@ function Index() {
   return (
     <main>
       <section className="bg-gradient-hero">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 md:grid-cols-2 md:py-20">
+        <div className="mx-auto grid  items-center gap-6 px-4 py-6">
           <div className="animate-rise">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-secondary-foreground">
               <Sparkles className="size-3.5" /> Sem ligação, sem espera
             </span>
-            <h1 className="mt-4 text-5xl font-semibold leading-[1.05] md:text-6xl">
+            <h1 className="mt-4 text-4xl font-semibold leading-[1.05]">
               Seu horário, <em className="text-primary">do seu jeito.</em>
             </h1>
             <p className="mt-4 max-w-md text-lg text-muted-foreground">
@@ -76,7 +76,7 @@ function Index() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-14">
+      <section className="mx-auto  px-4 py-6">
         <div className="flex items-end justify-between">
           <h2 className="text-3xl font-semibold">Profissionais em destaque</h2>
           <Link to="/auth" className="text-sm font-semibold text-primary">É profissional? Cadastre seu espaço →</Link>
@@ -86,7 +86,7 @@ function Index() {
         ) : filtered.length === 0 ? (
           <p className="mt-8 text-muted-foreground">Nenhum profissional encontrado.</p>
         ) : (
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-5">
             {filtered.map((b, i) => {
               const prices = b.services.filter((s) => s.active).map((s) => Number(s.price));
               return (

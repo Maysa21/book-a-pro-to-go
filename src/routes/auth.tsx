@@ -60,7 +60,7 @@ function AuthPage() {
   };
 
   return (
-    <main className="relative min-h-[calc(100vh-4rem)] bg-gradient-hero px-4 py-12">
+    <main className="relative min-h-[calc(100dvh-8.5rem)] bg-gradient-hero px-4 py-6">
       <div className="mx-auto max-w-md animate-rise rounded-3xl border border-border bg-card p-8 shadow-soft">
         {sent ? (
           <div className="text-center">
