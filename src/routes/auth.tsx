@@ -1,11 +1,12 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Briefcase, User } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/auth")({
@@ -22,6 +23,12 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) navigate({ to: "/", replace: true });
+  }, [user, navigate]);
+
   const [mode, setMode] = useState<"in" | "up">("in");
   const [type, setType] = useState<"client" | "professional">("client");
   const [form, setForm] = useState({ name: "", phone: "", email: "", password: "" });
@@ -38,7 +45,7 @@ function AuthPage() {
           password: form.password,
         });
         if (error) throw error;
-        navigate({ to: "/agenda" });
+        navigate({ to: "/" });
       } else {
         const { data, error } = await supabase.auth.signUp({
           email: form.email,
@@ -60,7 +67,7 @@ function AuthPage() {
   };
 
   return (
-    <main className="relative min-h-[calc(100dvh-8.5rem)] bg-gradient-hero px-4 py-6">
+    <main className="relative min-h-[calc(100dvh-3.5rem)] bg-gradient-hero px-4 py-6">
       <div className="mx-auto max-w-md animate-rise rounded-3xl border border-border bg-card p-8 shadow-soft">
         {sent ? (
           <div className="text-center">

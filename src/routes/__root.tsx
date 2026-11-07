@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -130,16 +131,21 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <AuthProvider>
-        <div className="relative mx-auto min-h-screen max-w-md bg-background pb-[calc(5rem+env(safe-area-inset-bottom))] shadow-soft sm:border-x sm:border-border/60">
+        <div
+          className={`relative mx-auto min-h-screen max-w-md bg-background shadow-soft sm:border-x sm:border-border/60 ${
+            pathname === "/auth" ? "" : "pb-[calc(5rem+env(safe-area-inset-bottom))]"
+          }`}
+        >
           <AppHeader />
           <Outlet />
         </div>
-        <BottomNav />
+        {pathname !== "/auth" && <BottomNav />}
         <Toaster richColors position="top-center" />
       </AuthProvider>
     </QueryClientProvider>

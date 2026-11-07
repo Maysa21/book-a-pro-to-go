@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { brl } from "@/lib/slots";
 import hero from "@/assets/hero-studio.jpg";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
     meta: [
       { title: "AgendaFácil — encontre e agende profissionais" },
