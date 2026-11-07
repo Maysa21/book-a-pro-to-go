@@ -28,3 +28,6 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Data access goes directly from the browser through the Cloud client with RLS (no server functions); booking overlap is enforced by a DB trigger and free slots come from the `get_busy_slots` RPC so clients never read other people's bookings.
+- Account type (client/professional) lives in `user_roles`, set by the signup trigger from sign-up metadata.
