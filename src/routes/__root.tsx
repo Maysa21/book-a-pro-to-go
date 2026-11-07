@@ -142,7 +142,7 @@ function RootComponent() {
             pathname === "/auth" ? "" : "pb-[calc(5rem+env(safe-area-inset-bottom))]"
           }`}
         >
-          <AppHeader />
+          {pathname !== "/auth" && <AppHeader />}
           <Outlet />
         </div>
         {pathname !== "/auth" && <BottomNav />}
