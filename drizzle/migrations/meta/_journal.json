@@ -8,6 +8,13 @@
       "when": 1794089489600,
       "tag": "0000_agendafacil_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794168296746,
+      "tag": "0001_add_admin_role",
+      "breakpoints": true
     }
   ]
 }
