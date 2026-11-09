@@ -13,6 +13,8 @@ import loginBg from "@/assets/login-bg.jpg";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Entrar ou criar conta — AgendaFácil" },
       { name: "description", content: "Crie sua conta de cliente ou profissional no AgendaFácil." },
       { property: "og:title", content: "Entrar — AgendaFácil" },

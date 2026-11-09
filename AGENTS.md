@@ -31,3 +31,4 @@ use the editor.
 
 - Data access goes directly from the browser through the Cloud client with RLS (no server functions); booking overlap is enforced by a DB trigger and free slots come from the `get_busy_slots` RPC so clients never read other people's bookings.
 - Account type (client/professional) lives in `user_roles`, set by the signup trigger from sign-up metadata.
+- Self-account editing uses the authenticated browser client and owner-scoped profile updates; passwords stay in Auth, so account settings never grant role changes.

@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/_authenticated/agenda")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Minha agenda — AgendaFácil" },
       { name: "description", content: "Seus próximos agendamentos." },
       { property: "og:title", content: "Minha agenda — AgendaFácil" },

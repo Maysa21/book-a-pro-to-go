@@ -19,7 +19,9 @@ export function AppHeader() {
           </span>
           {user ? (
             <span className="min-w-0">
-              <span className="block truncate text-sm font-semibold leading-tight">Olá, {name.split(" ")[0]}</span>
+              <span className="block truncate text-sm font-semibold leading-tight">
+                Olá, {name.split(" ")[0]}
+              </span>
               <span className="block text-xs text-muted-foreground">
                 {role === "professional" ? "Profissional" : "Cliente"}
               </span>
@@ -30,9 +32,16 @@ export function AppHeader() {
         </Link>
         {user ? (
           <div className="flex shrink-0 items-center gap-1">
-            <span className="grid size-8 place-items-center rounded-full bg-accent text-sm font-semibold text-accent-foreground">
-              {initial}
-            </span>
+            <Button
+              asChild
+              variant="ghost"
+              size="icon"
+              className="rounded-full bg-accent text-accent-foreground"
+            >
+              <Link to="/conta" aria-label="Gerenciar minha conta" title="Gerenciar minha conta">
+                {initial}
+              </Link>
+            </Button>
             <Button
               variant="ghost"
               size="icon"
@@ -84,6 +93,10 @@ export function BottomNav() {
                 Meu espaço
               </Link>
             )}
+            <Link to="/conta" className={item} activeProps={active}>
+              <UserRound className="size-6" />
+              Conta
+            </Link>
           </>
         ) : (
           <Link to="/auth" className={item} activeProps={active}>

@@ -14,6 +14,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedAgendaRouteImport } from './routes/_authenticated/agenda'
 import { Route as AuthenticatedChatRouteImport } from './routes/_authenticated/chat'
+import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as AuthenticatedEstudioRouteImport } from './routes/_authenticated/estudio'
 import { Route as PIdRouteImport } from './routes/p.$id'
 
@@ -41,6 +42,11 @@ const AuthenticatedChatRoute = AuthenticatedChatRouteImport.update({
   path: '/chat',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedContaRoute = AuthenticatedContaRouteImport.update({
+  id: '/conta',
+  path: '/conta',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedEstudioRoute = AuthenticatedEstudioRouteImport.update({
   id: '/estudio',
   path: '/estudio',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/agenda': typeof AuthenticatedAgendaRoute
   '/chat': typeof AuthenticatedChatRoute
+  '/conta': typeof AuthenticatedContaRoute
   '/estudio': typeof AuthenticatedEstudioRoute
   '/p/$id': typeof PIdRoute
 }
@@ -64,6 +71,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/agenda': typeof AuthenticatedAgendaRoute
   '/chat': typeof AuthenticatedChatRoute
+  '/conta': typeof AuthenticatedContaRoute
   '/estudio': typeof AuthenticatedEstudioRoute
   '/p/$id': typeof PIdRoute
   '/': typeof AuthenticatedIndexRoute
@@ -74,21 +82,24 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/agenda': typeof AuthenticatedAgendaRoute
   '/_authenticated/chat': typeof AuthenticatedChatRoute
+  '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/_authenticated/estudio': typeof AuthenticatedEstudioRoute
   '/p/$id': typeof PIdRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/agenda' | '/chat' | '/estudio' | '/p/$id'
+  fullPaths:
+    '/' | '/auth' | '/agenda' | '/chat' | '/conta' | '/estudio' | '/p/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/auth' | '/agenda' | '/chat' | '/estudio' | '/p/$id' | '/'
+  to: '/auth' | '/agenda' | '/chat' | '/conta' | '/estudio' | '/p/$id' | '/'
   id:
     | '__root__'
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/agenda'
     | '/_authenticated/chat'
+    | '/_authenticated/conta'
     | '/_authenticated/estudio'
     | '/p/$id'
     | '/_authenticated/'
@@ -137,6 +148,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedChatRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/conta': {
+      id: '/_authenticated/conta'
+      path: '/conta'
+      fullPath: '/conta'
+      preLoaderRoute: typeof AuthenticatedContaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/estudio': {
       id: '/_authenticated/estudio'
       path: '/estudio'
@@ -157,6 +175,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAgendaRoute: typeof AuthenticatedAgendaRoute
   AuthenticatedChatRoute: typeof AuthenticatedChatRoute
+  AuthenticatedContaRoute: typeof AuthenticatedContaRoute
   AuthenticatedEstudioRoute: typeof AuthenticatedEstudioRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
@@ -164,6 +183,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAgendaRoute: AuthenticatedAgendaRoute,
   AuthenticatedChatRoute: AuthenticatedChatRoute,
+  AuthenticatedContaRoute: AuthenticatedContaRoute,
   AuthenticatedEstudioRoute: AuthenticatedEstudioRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
 }

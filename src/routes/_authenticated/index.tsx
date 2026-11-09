@@ -11,6 +11,8 @@ import hero from "@/assets/hero-studio.jpg";
 export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "AgendaFácil — encontre e agende profissionais" },
       { name: "description", content: "Encontre profissionais de beleza, veja horários livres e agende em segundos." },
       { property: "og:title", content: "AgendaFácil — encontre e agende profissionais" },

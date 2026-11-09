@@ -13,6 +13,8 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/p/$id")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Agendar horário — AgendaFácil" },
       { name: "description", content: "Escolha o serviço, o dia e um horário livre." },
       { property: "og:title", content: "Agendar horário — AgendaFácil" },
