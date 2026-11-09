@@ -1,13 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { LockKeyhole, Save, UserRound, LoaderCircle } from "lucide-react";
+import { LockKeyhole, Save, UserRound, LoaderCircle, Store } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
-import { saveAccountProfile } from "@/lib/account";
+import { changeAccountType, saveAccountProfile, type AccountType } from "@/lib/account";
 
 export const Route = createFileRoute("/_authenticated/conta")({
   head: () => ({
@@ -30,6 +31,8 @@ function AccountPage() {
   const [confirmation, setConfirmation] = useState("");
   const [saving, setSaving] = useState(false);
   const [changing, setChanging] = useState(false);
+  const [switching, setSwitching] = useState<AccountType | null>(null);
+  const queryClient = useQueryClient();
   useEffect(() => {
     if (profile) setForm({ name: profile.full_name, phone: profile.phone });
   }, [profile]);
@@ -53,6 +56,21 @@ function AccountPage() {
       toast.error("Não foi possível salvar seus dados. Tente novamente.");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const switchType = async (nextType: AccountType) => {
+    if (switching || nextType === role) return;
+    setSwitching(nextType);
+    try {
+      await changeAccountType(nextType);
+      await refresh();
+      await queryClient.invalidateQueries();
+      toast.success(nextType === "professional" ? "Conta alterada para profissional!" : "Conta alterada para cliente!");
+    } catch {
+      toast.error("Não foi possível alterar o tipo de conta. Tente novamente.");
+    } finally {
+      setSwitching(null);
     }
   };
 
@@ -90,6 +108,33 @@ function AccountPage() {
           </p>
         </div>
       </div>
+      <section className="space-y-4 border-b border-border py-6" aria-labelledby="account-type-title">
+        <h2 id="account-type-title" className="text-xl font-semibold">Tipo de conta</h2>
+        <div className="grid grid-cols-2 gap-2" role="group" aria-label="Tipo de conta">
+          <Button
+            type="button"
+            variant={role === "client" ? "default" : "outline"}
+            aria-pressed={role === "client"}
+            disabled={switching !== null}
+            className="h-12 min-w-0"
+            onClick={() => switchType("client")}
+          >
+            {switching === "client" ? <LoaderCircle className="animate-spin" /> : <UserRound />}
+            Cliente
+          </Button>
+          <Button
+            type="button"
+            variant={role === "professional" ? "default" : "outline"}
+            aria-pressed={role === "professional"}
+            disabled={switching !== null}
+            className="h-12 min-w-0"
+            onClick={() => switchType("professional")}
+          >
+            {switching === "professional" ? <LoaderCircle className="animate-spin" /> : <Store />}
+            Profissional
+          </Button>
+        </div>
+      </section>
       <form onSubmit={save} className="space-y-5 py-6">
         <h2 className="text-xl font-semibold">Dados pessoais</h2>
         <div className="space-y-2">

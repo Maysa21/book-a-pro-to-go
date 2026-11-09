@@ -262,6 +262,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      set_my_account_type: {
+        Args: { _account_type: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "client" | "professional" | "admin"

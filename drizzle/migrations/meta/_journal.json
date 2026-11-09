@@ -15,6 +15,13 @@
       "when": 1794168296746,
       "tag": "0001_add_admin_role",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794226693933,
+      "tag": "0002_allow_self_account_type_switch",
+      "breakpoints": true
     }
   ]
 }
