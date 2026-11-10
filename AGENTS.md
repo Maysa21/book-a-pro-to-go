@@ -33,3 +33,4 @@ use the editor.
 - Account type (client/professional) lives in `user_roles`, set by the signup trigger from sign-up metadata.
 - Self-account editing uses owner-scoped browser profile updates and Auth for passwords; account type changes use the authenticated set_my_account_type RPC, which accepts only client/professional for auth.uid() and preserves admin roles and existing records.
 - Establishment photos use owner-prefixed paths in private Cloud storage and browser-generated expiring URLs; storage read policies expose only published photos or the owner's files because public buckets are blocked by workspace policy.
+- Meu espaço uses local overview/create/details navigation; service controls are rendered only for a saved establishment explicitly opened from the overview, keeping creation separate from service management.

@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
-import { Plus, Trash2, Eye, Save, Clock3, Store, Sparkles, ImagePlus } from "lucide-react";
+import { useEffect, useReducer, useRef, useState } from "react";
+import { Plus, Trash2, Eye, Save, Clock3, Store, Sparkles, ImagePlus, ArrowLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,7 @@ import { brl, WEEKDAYS } from "@/lib/slots";
 import { cn } from "@/lib/utils";
 import { BusinessPhoto } from "@/components/BusinessPhoto";
 import { removeBusinessPhoto, uploadBusinessPhoto, validateBusinessPhoto } from "@/lib/business-photos";
+import { studioNavigation } from "@/lib/studio-navigation";
 
 export const Route = createFileRoute("/_authenticated/estudio")({
   head: () => ({
@@ -60,6 +61,7 @@ const empty: Biz = {
 function StudioPage() {
   const { user, role, loading } = useAuth();
   const qc = useQueryClient();
+  const [view, dispatch] = useReducer(studioNavigation, "overview");
   const [form, setForm] = useState<Biz>(empty);
   const [saving, setSaving] = useState(false);
   const [photo, setPhoto] = useState<File | null>(null);
@@ -135,6 +137,7 @@ function StudioPage() {
         qc.invalidateQueries({ queryKey: ["businesses"] }),
         qc.invalidateQueries({ queryKey: ["business"] }),
       ]);
+      dispatch({ type: "saved", hasBusiness: true });
       if (oldPath && oldPath !== payload.photo_path) {
         await removeBusinessPhoto(oldPath).catch(() => {});
       }
@@ -187,10 +190,38 @@ function StudioPage() {
     qc.invalidateQueries({ queryKey: ["my-business"] });
   };
 
+  if (view === "overview") {
+    return (
+      <main className="min-w-0 px-5 py-6">
+        <h1 className="text-3xl font-semibold">Meu espaço</h1>
+        {biz ? (
+          <Button type="button" variant="outline" className="mt-6 h-auto w-full min-w-0 flex-col items-stretch gap-4 whitespace-normal rounded-lg p-4 text-left"
+            onClick={() => dispatch({ type: "open", hasBusiness: true })} aria-label={`Abrir ${biz.name}`}>
+            <BusinessPhoto path={biz.photo_path} name={biz.name} emoji={biz.emoji} />
+            <span className="flex min-w-0 items-center justify-between gap-3">
+              <span className="min-w-0">
+                <span className="block break-words text-xl font-semibold">{biz.name}</span>
+                <span className="mt-1 block text-sm text-muted-foreground">{biz.category}</span>
+              </span>
+              <ChevronRight className="size-5 shrink-0" />
+            </span>
+          </Button>
+        ) : (
+          <Button type="button" className="mt-6 h-12 w-full" onClick={() => {
+            setForm(empty); setPhoto(null);
+            dispatch({ type: "create", hasBusiness: false });
+          }}><Plus /> Criar espaço</Button>
+        )}
+      </main>
+    );
+  }
+
   return (
     <main className="min-w-0 px-5 py-6">
+      <Button type="button" variant="ghost" size="sm" className="mb-4" disabled={saving || adding}
+        onClick={() => { setPhoto(null); dispatch({ type: "back", hasBusiness: !!biz }); }}><ArrowLeft /> Voltar</Button>
       <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-        <h1 className="min-w-0 text-3xl font-semibold">Meu espaço</h1>
+        <h1 className="min-w-0 break-words text-3xl font-semibold">{view === "create" ? "Criar espaço" : biz?.name ?? "Meu espaço"}</h1>
         {biz && (
           <Button asChild variant="outline" size="icon" className="shrink-0">
             <Link
@@ -375,16 +406,11 @@ function StudioPage() {
         </section>
       </form>
 
-      <section className="min-w-0 border-t border-border py-6">
+      {biz && view === "details" && <section className="min-w-0 border-t border-border py-6">
         <h2 className="flex items-center gap-2 text-xl font-semibold">
           <Sparkles className="size-5 text-primary" />
           Serviços
         </h2>
-        {!biz ? (
-          <p className="mt-4 text-sm text-muted-foreground">
-            Crie seu espaço para cadastrar serviços.
-          </p>
-        ) : (
           <>
             <form onSubmit={addService} className="mt-5 space-y-4">
               <div className="space-y-2">
@@ -463,8 +489,7 @@ function StudioPage() {
               )}
             </ul>
           </>
-        )}
-      </section>
+      </section>}
     </main>
   );
 }
