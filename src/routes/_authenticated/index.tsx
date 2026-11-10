@@ -1,12 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Search, Star, MapPin, ShieldAlert, Clock, Sparkles } from "lucide-react";
+import { Search, Star, MapPin, Sparkles } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { brl } from "@/lib/slots";
-import hero from "@/assets/hero-studio.jpg";
 
 export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
@@ -63,17 +62,6 @@ function Index() {
                 className="h-14 rounded-full bg-card pl-12 text-base shadow-soft"
               />
             </div>
-            <div className="mt-6 flex flex-wrap gap-4 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1.5"><Clock className="size-4 text-primary" /> Horários em tempo real</span>
-              <span className="flex items-center gap-1.5"><ShieldAlert className="size-4 text-urgent" /> Chat de emergência</span>
-            </div>
-          </div>
-          <div className="relative">
-            <img src={hero} alt="Estúdio aconchegante" width={1280} height={960} className="aspect-[4/3] w-full rounded-[2rem] object-cover shadow-soft" />
-            <div className="absolute -bottom-5 left-5 rounded-2xl bg-card p-4 shadow-soft">
-              <p className="text-xs text-muted-foreground">Próximo horário livre</p>
-              <p className="font-display text-xl font-semibold">Hoje, 15:30</p>
-            </div>
           </div>
         </div>
       </section>
@@ -81,7 +69,6 @@ function Index() {
       <section className="mx-auto  px-4 py-6">
         <div className="flex items-end justify-between">
           <h2 className="text-3xl font-semibold">Profissionais em destaque</h2>
-          <Link to="/auth" className="text-sm font-semibold text-primary">É profissional? Cadastre seu espaço →</Link>
         </div>
         {isLoading ? (
           <p className="mt-8 text-muted-foreground">Carregando…</p>
