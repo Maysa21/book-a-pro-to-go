@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { Plus, Trash2, Eye, Save, Clock3, Store, Sparkles } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Plus, Trash2, Eye, Save, Clock3, Store, Sparkles, ImagePlus } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { brl, WEEKDAYS } from "@/lib/slots";
 import { cn } from "@/lib/utils";
+import { BusinessPhoto } from "@/components/BusinessPhoto";
+import { removeBusinessPhoto, uploadBusinessPhoto, validateBusinessPhoto } from "@/lib/business-photos";
 
 export const Route = createFileRoute("/_authenticated/estudio")({
   head: () => ({
@@ -39,6 +41,7 @@ type Biz = {
   slot_interval: number;
   emoji: string;
   published: boolean;
+  photo_path: string | null;
 };
 const empty: Biz = {
   name: "",
@@ -51,6 +54,7 @@ const empty: Biz = {
   slot_interval: 30,
   emoji: "✨",
   published: true,
+  photo_path: null,
 };
 
 function StudioPage() {
@@ -58,6 +62,9 @@ function StudioPage() {
   const qc = useQueryClient();
   const [form, setForm] = useState<Biz>(empty);
   const [saving, setSaving] = useState(false);
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const photoInput = useRef<HTMLInputElement>(null);
   const [adding, setAdding] = useState(false);
   const [svc, setSvc] = useState({ name: "", duration: "30", price: "" });
 
@@ -78,8 +85,20 @@ function StudioPage() {
 
   useEffect(() => {
     if (biz)
-      setForm({ ...biz, opens_at: biz.opens_at.slice(0, 5), closes_at: biz.closes_at.slice(0, 5) });
+      setForm({
+        name: biz.name, category: biz.category, location: biz.location, bio: biz.bio,
+        opens_at: biz.opens_at.slice(0, 5), closes_at: biz.closes_at.slice(0, 5),
+        days: biz.days, slot_interval: biz.slot_interval, emoji: biz.emoji,
+        published: biz.published, photo_path: biz.photo_path,
+      });
   }, [biz]);
+
+  useEffect(() => {
+    if (!photo) { setPreview(null); return; }
+    const url = URL.createObjectURL(photo);
+    setPreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [photo]);
 
   if (loading) return <main className="p-5 text-muted-foreground">Carregando…</main>;
   if (role !== "professional")
@@ -99,18 +118,32 @@ function StudioPage() {
     }
     if (!user) return;
     setSaving(true);
-    const payload = { ...form, owner_id: user.id };
-    const { error } = biz
-      ? await supabase.from("businesses").update(payload).eq("id", biz.id)
-      : await supabase.from("businesses").insert(payload);
-    setSaving(false);
-    if (error) {
-      toast.error(error.message);
-      return;
+    let uploaded: string | null = null;
+    try {
+      if (photo) uploaded = await uploadBusinessPhoto(user.id, photo);
+      const payload = { ...form, photo_path: uploaded ?? form.photo_path, owner_id: user.id };
+      const { error } = biz
+        ? await supabase.from("businesses").update(payload).eq("id", biz.id).eq("owner_id", user.id).select("id").single()
+        : await supabase.from("businesses").insert(payload).select("id").single();
+      if (error) throw error;
+      const oldPath = biz?.photo_path;
+      setForm(payload);
+      setPhoto(null);
+      toast.success("Espaço salvo!");
+      await Promise.all([
+        qc.invalidateQueries({ queryKey: ["my-business"] }),
+        qc.invalidateQueries({ queryKey: ["businesses"] }),
+        qc.invalidateQueries({ queryKey: ["business"] }),
+      ]);
+      if (oldPath && oldPath !== payload.photo_path) {
+        await removeBusinessPhoto(oldPath).catch(() => {});
+      }
+    } catch (error) {
+      if (uploaded) await removeBusinessPhoto(uploaded).catch(() => {});
+      toast.error(error instanceof Error ? error.message : "Não foi possível salvar o espaço. Tente novamente.");
+    } finally {
+      setSaving(false);
     }
-    toast.success("Espaço salvo!");
-    qc.invalidateQueries({ queryKey: ["my-business"] });
-    qc.invalidateQueries({ queryKey: ["businesses"] });
   };
 
   const addService = async (e: React.FormEvent) => {
@@ -178,6 +211,25 @@ function StudioPage() {
             <Store className="size-5 text-primary" />
             Perfil do espaço
           </h2>
+          <div className="min-w-0 space-y-3">
+            <Label htmlFor="biz-photo">Foto do estabelecimento</Label>
+            <BusinessPhoto path={form.photo_path} preview={preview} name={form.name} emoji={form.emoji} />
+            <input ref={photoInput} id="biz-photo" type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" disabled={saving}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (!file) return;
+                try { validateBusinessPhoto(file); setPhoto(file); }
+                catch (error) { toast.error(error instanceof Error ? error.message : "Foto inválida."); }
+              }} />
+            <div className="flex gap-2">
+              <Button type="button" variant="outline" disabled={saving} className="min-w-0 flex-1" onClick={() => photoInput.current?.click()}>
+                <ImagePlus /> {photo || form.photo_path ? "Trocar foto" : "Adicionar foto"}
+              </Button>
+              {(photo || form.photo_path) && <Button type="button" variant="outline" size="icon" disabled={saving} aria-label="Remover foto" title="Remover foto"
+                onClick={() => { setPhoto(null); setForm({ ...form, photo_path: null }); }}><Trash2 /></Button>}
+            </div>
+          </div>
           <div className="space-y-2">
             <Label htmlFor="biz-name">Nome do espaço</Label>
             <Input

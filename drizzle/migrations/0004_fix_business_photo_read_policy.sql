@@ -1,0 +1,1 @@
+ALTER POLICY "business photo readable" ON storage.objects USING (bucket_id = 'business-photos' AND ((storage.foldername(name))[1] = (SELECT auth.uid())::text OR EXISTS (SELECT 1 FROM public.businesses b WHERE b.photo_path = storage.objects.name AND b.published)));

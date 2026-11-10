@@ -87,6 +87,7 @@ export type Database = {
           name: string
           opens_at: string
           owner_id: string | null
+          photo_path: string | null
           published: boolean
           rating: number
           slot_interval: number
@@ -103,6 +104,7 @@ export type Database = {
           name: string
           opens_at?: string
           owner_id?: string | null
+          photo_path?: string | null
           published?: boolean
           rating?: number
           slot_interval?: number
@@ -119,6 +121,7 @@ export type Database = {
           name?: string
           opens_at?: string
           owner_id?: string | null
+          photo_path?: string | null
           published?: boolean
           rating?: number
           slot_interval?: number

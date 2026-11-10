@@ -1,0 +1,4 @@
+ALTER TABLE public.businesses ADD COLUMN photo_path text;
+CREATE POLICY "business photo owner upload" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'business-photos' AND (storage.foldername(name))[1] = (SELECT auth.uid())::text);
+CREATE POLICY "business photo readable" ON storage.objects FOR SELECT TO anon, authenticated USING (bucket_id = 'business-photos' AND ((storage.foldername(name))[1] = (SELECT auth.uid())::text OR EXISTS (SELECT 1 FROM public.businesses b WHERE b.photo_path = name AND b.published)));
+CREATE POLICY "business photo owner delete" ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'business-photos' AND (storage.foldername(name))[1] = (SELECT auth.uid())::text);

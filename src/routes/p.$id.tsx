@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { availableSlots, brl, isoDate, WEEKDAYS } from "@/lib/slots";
 import { cn } from "@/lib/utils";
+import { BusinessPhoto } from "@/components/BusinessPhoto";
 
 export const Route = createFileRoute("/p/$id")({
   head: () => ({
@@ -107,10 +108,11 @@ function BusinessPage() {
   return (
     <main className="mx-auto grid  gap-8 px-4 py-6">
       <div className="min-w-0 space-y-8">
-        <header className="flex animate-rise items-start gap-5 rounded-3xl bg-gradient-hero p-6">
+        {biz.photo_path && <BusinessPhoto path={biz.photo_path} name={biz.name} emoji={biz.emoji} />}
+        <header className="flex animate-rise flex-wrap items-start gap-5 rounded-3xl bg-gradient-hero p-6">
           <span className="grid size-20 shrink-0 place-items-center rounded-3xl bg-card text-5xl shadow-soft">{biz.emoji}</span>
-          <div className="flex-1">
-            <h1 className="text-3xl font-semibold">{biz.name}</h1>
+          <div className="min-w-0 flex-1 basis-40">
+            <h1 className="break-words text-3xl font-semibold">{biz.name}</h1>
             <p className="text-muted-foreground">{biz.category}</p>
             <div className="mt-2 flex flex-wrap gap-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-1"><Star className="size-4 fill-primary text-primary" /> {Number(biz.rating).toFixed(1)}</span>

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { brl } from "@/lib/slots";
+import { BusinessPhoto } from "@/components/BusinessPhoto";
 
 export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
@@ -86,6 +87,7 @@ function Index() {
                   className="group animate-rise rounded-3xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:shadow-glow"
                   style={{ animationDelay: `${i * 60}ms` }}
                 >
+                  {b.photo_path && <BusinessPhoto path={b.photo_path} name={b.name} emoji={b.emoji} className="mb-4" />}
                   <div className="flex items-start justify-between">
                     <span className="grid size-14 place-items-center rounded-2xl bg-accent text-3xl">{b.emoji}</span>
                     <span className="flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-sm font-semibold">

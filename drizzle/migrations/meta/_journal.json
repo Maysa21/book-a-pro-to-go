@@ -22,6 +22,20 @@
       "when": 1794226693933,
       "tag": "0002_allow_self_account_type_switch",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1794313945250,
+      "tag": "0003_business_photo_uploads",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794314176282,
+      "tag": "0004_fix_business_photo_read_policy",
+      "breakpoints": true
     }
   ]
 }
