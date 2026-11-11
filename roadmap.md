@@ -1,6 +1,6 @@
 # Current request
-- [ ] Show a create action before the form and an establishment overview before details and services.
-- [ ] Verify creation, selecting the created establishment and service creation through the signed-in UI.
+- [x] Show a create action before the form and an establishment overview before details and services.
+- [x] Verify creation, selecting the created establishment after reload and service creation through the signed-in UI; remove temporary test records and check mobile/desktop widths.
 - [x] Add establishment photo selection, replacement and removal in Meu espaço, with persisted uploads and client-facing photos.
 - [x] Verify real authenticated upload, reload, replacement, removal and public photo display; run photo tests and remove the temporary test establishment.
 - [x] Remove the home-screen items indicated in the user's uploaded screenshots.
