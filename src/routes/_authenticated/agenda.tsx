@@ -14,9 +14,9 @@ export const Route = createFileRoute("/_authenticated/agenda")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Minha agenda — AgendaFácil" },
+      { title: "Minha agenda — Agende Já" },
       { name: "description", content: "Seus próximos agendamentos." },
-      { property: "og:title", content: "Minha agenda — AgendaFácil" },
+      { property: "og:title", content: "Minha agenda — Agende Já" },
       { property: "og:description", content: "Seus próximos agendamentos." },
     ],
   }),

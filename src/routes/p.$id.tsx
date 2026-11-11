@@ -16,9 +16,9 @@ export const Route = createFileRoute("/p/$id")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Agendar horário — AgendaFácil" },
+      { title: "Agendar horário — Agende Já" },
       { name: "description", content: "Escolha o serviço, o dia e um horário livre." },
-      { property: "og:title", content: "Agendar horário — AgendaFácil" },
+      { property: "og:title", content: "Agendar horário — Agende Já" },
       { property: "og:description", content: "Escolha o serviço, o dia e um horário livre." },
     ],
   }),

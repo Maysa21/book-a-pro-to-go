@@ -2,7 +2,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
   appId: "dev.agendafacil.app",
-  appName: "AgendaFácil",
+  appName: "Agende Já",
   webDir: "dist-mobile",
   server: {
     // Serve the app from a secure origin inside the phone, so the backend

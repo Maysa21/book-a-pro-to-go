@@ -13,9 +13,9 @@ export const Route = createFileRoute("/_authenticated/")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "AgendaFácil — encontre e agende profissionais" },
+      { title: "Agende Já — encontre e agende profissionais" },
       { name: "description", content: "Encontre profissionais de beleza, veja horários livres e agende em segundos." },
-      { property: "og:title", content: "AgendaFácil — encontre e agende profissionais" },
+      { property: "og:title", content: "Agende Já — encontre e agende profissionais" },
       { property: "og:description", content: "Veja horários livres e agende em segundos." },
     ],
   }),

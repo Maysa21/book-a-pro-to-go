@@ -20,9 +20,9 @@ export const Route = createFileRoute("/_authenticated/chat")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Chat — AgendaFácil" },
+      { title: "Chat — Agende Já" },
       { name: "description", content: "Converse com o profissional ou cliente, inclusive em emergências." },
-      { property: "og:title", content: "Chat — AgendaFácil" },
+      { property: "og:title", content: "Chat — Agende Já" },
       { property: "og:description", content: "Converse com o profissional, inclusive em emergências." },
     ],
   }),

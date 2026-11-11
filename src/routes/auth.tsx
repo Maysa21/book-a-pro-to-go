@@ -15,9 +15,9 @@ export const Route = createFileRoute("/auth")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Entrar ou criar conta — AgendaFácil" },
-      { name: "description", content: "Crie sua conta de cliente ou profissional no AgendaFácil." },
-      { property: "og:title", content: "Entrar — AgendaFácil" },
+      { title: "Entrar ou criar conta — Agende Já" },
+      { name: "description", content: "Crie sua conta de cliente ou profissional no Agende Já." },
+      { property: "og:title", content: "Entrar — Agende Já" },
       { property: "og:description", content: "Crie sua conta de cliente ou profissional." },
     ],
   }),
@@ -91,7 +91,7 @@ function AuthPage() {
             <span className="mx-auto grid size-10 place-items-center rounded-2xl bg-gradient-warm text-primary-foreground shadow-glow">
               <CalendarHeart className="size-5" />
             </span>
-            <h1 className="mt-3 font-display text-2xl font-semibold">AgendaFácil</h1>
+            <h1 className="mt-3 font-display text-2xl font-semibold">Agende Já</h1>
             {mode === "in" && (
               <p className="mt-1 text-sm text-muted-foreground">Entre para ver sua agenda.</p>
             )}

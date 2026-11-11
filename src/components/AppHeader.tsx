@@ -27,7 +27,7 @@ export function AppHeader() {
               </span>
             </span>
           ) : (
-            <span className="truncate font-display text-lg font-semibold">AgendaFácil</span>
+            <span className="truncate font-display text-lg font-semibold">Agende Já</span>
           )}
         </Link>
         {user ? (

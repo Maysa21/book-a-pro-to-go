@@ -21,9 +21,9 @@ export const Route = createFileRoute("/_authenticated/estudio")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Meu espaço — AgendaFácil" },
+      { title: "Meu espaço — Agende Já" },
       { name: "description", content: "Cadastre serviços e defina seus horários de atendimento." },
-      { property: "og:title", content: "Meu espaço — AgendaFácil" },
+      { property: "og:title", content: "Meu espaço — Agende Já" },
       { property: "og:description", content: "Cadastre serviços e defina seus horários." },
     ],
   }),

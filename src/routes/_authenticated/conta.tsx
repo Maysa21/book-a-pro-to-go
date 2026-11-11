@@ -16,9 +16,9 @@ import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, A
 export const Route = createFileRoute("/_authenticated/conta")({
   head: () => ({
     meta: [
-      { title: "Minha conta — AgendaFácil" },
-      { name: "description", content: "Gerencie seus dados pessoais e sua senha no AgendaFácil." },
-      { property: "og:title", content: "Minha conta — AgendaFácil" },
+      { title: "Minha conta — Agende Já" },
+      { name: "description", content: "Gerencie seus dados pessoais e sua senha no Agende Já." },
+      { property: "og:title", content: "Minha conta — Agende Já" },
       { property: "og:description", content: "Gerencie seus dados pessoais e sua senha." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
