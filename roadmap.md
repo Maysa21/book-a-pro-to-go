@@ -1,4 +1,6 @@
 # Current request
+- [x] Remove the named establishment, add confirmed self-account deletion, and automatically clean up establishments when accounts are deleted.
+- [x] Verify deletion tests, confirmation/cancel UI and end-to-end Auth plus establishment cleanup with a temporary account; no real user's account was deleted.
 - [x] Show a create action before the form and an establishment overview before details and services.
 - [x] Verify creation, selecting the created establishment after reload and service creation through the signed-in UI; remove temporary test records and check mobile/desktop widths.
 - [x] Add establishment photo selection, replacement and removal in Meu espaço, with persisted uploads and client-facing photos.

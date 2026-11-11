@@ -29,7 +29,8 @@ use the editor.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
 
-- Data access goes directly from the browser through the Cloud client with RLS (no server functions); booking overlap is enforced by a DB trigger and free slots come from the `get_busy_slots` RPC so clients never read other people's bookings.
+- Ordinary data access goes directly from the browser through the Cloud client with RLS; booking overlap is enforced by a DB trigger and free slots come from the get_busy_slots RPC so clients never read other people's bookings.
+- Self-account deletion is an authenticated server function with no caller-supplied user ID; it revalidates Auth, removes owner photos via Storage API, then deletes the caller through Auth admin. Profile cascade triggers remove the owner's establishment and associated records atomically, including deletion outside the app.
 - Account type (client/professional) lives in `user_roles`, set by the signup trigger from sign-up metadata.
 - Self-account editing uses owner-scoped browser profile updates and Auth for passwords; account type changes use the authenticated set_my_account_type RPC, which accepts only client/professional for auth.uid() and preserves admin roles and existing records.
 - Establishment photos use owner-prefixed paths in private Cloud storage and browser-generated expiring URLs; storage read policies expose only published photos or the owner's files because public buckets are blocked by workspace policy.

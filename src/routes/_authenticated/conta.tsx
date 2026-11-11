@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { LockKeyhole, Save, UserRound, LoaderCircle, Store } from "lucide-react";
+import { LockKeyhole, Save, UserRound, LoaderCircle, Store, Trash2 } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,8 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { changeAccountType, saveAccountProfile, type AccountType } from "@/lib/account";
+import { deleteMyAccount } from "@/lib/delete-account.functions";
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter } from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/_authenticated/conta")({
   head: () => ({
@@ -33,6 +36,9 @@ function AccountPage() {
   const [changing, setChanging] = useState(false);
   const [switching, setSwitching] = useState<AccountType | null>(null);
   const queryClient = useQueryClient();
+  const deleteAccount = useServerFn(deleteMyAccount);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   useEffect(() => {
     if (profile) setForm({ name: profile.full_name, phone: profile.phone });
   }, [profile]);
@@ -92,6 +98,20 @@ function AccountPage() {
     } finally {
       setChanging(false);
     }
+  };
+
+  const removeAccount = async () => {
+    setDeleting(true);
+    try {
+      await deleteAccount();
+    } catch {
+      setDeleting(false);
+      toast.error("Não foi possível excluir sua conta. Tente novamente.");
+      return;
+    }
+    queryClient.clear();
+    await supabase.auth.signOut({ scope: "local" });
+    window.location.replace("/auth");
   };
 
   return (
@@ -209,6 +229,23 @@ function AccountPage() {
           {changing ? "Alterando…" : "Alterar senha"}
         </Button>
       </form>
+      <section className="space-y-4 border-t border-border py-6">
+        <h2 className="text-xl font-semibold">Excluir conta</h2>
+        <p className="text-sm text-muted-foreground">A exclusão é permanente e remove seu espaço, serviços, agendamentos e conversas associados.</p>
+        <Button type="button" variant="destructive" className="h-11 w-full" disabled={saving || changing || switching !== null} onClick={() => setDeleteOpen(true)}><Trash2 /> Excluir minha conta</Button>
+      </section>
+      <AlertDialog open={deleteOpen} onOpenChange={(open) => { if (!deleting) setDeleteOpen(open); }}>
+        <AlertDialogContent className="max-w-[calc(100%-2rem)] rounded-lg sm:max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir sua conta definitivamente?</AlertDialogTitle>
+            <AlertDialogDescription>Seu espaço e os registros associados serão excluídos. Não será possível recuperar esses dados.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-2">
+            <Button variant="outline" disabled={deleting} onClick={() => setDeleteOpen(false)}>Cancelar</Button>
+            <Button variant="destructive" disabled={deleting} onClick={removeAccount}>{deleting ? <LoaderCircle className="animate-spin" /> : <Trash2 />}{deleting ? "Excluindo…" : "Excluir definitivamente"}</Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </main>
   );
 }
