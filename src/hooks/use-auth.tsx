@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -26,7 +26,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const load = async (u: User | null) => {
+  const loadedFor = useRef<string | null | undefined>(undefined);
+  const load = async (u: User | null, force = false) => {
+    const id = u?.id ?? null;
+    if (!force && loadedFor.current === id) return; // skip duplicate reloads
+    loadedFor.current = id;
     setUser(u);
     if (!u) {
       setRole(null);
@@ -47,9 +51,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "TOKEN_REFRESHED") return;
-      setTimeout(() => load(session?.user ?? null), 0);
+      setTimeout(() => load(session?.user ?? null, event === "USER_UPDATED"), 0);
     });
-    supabase.auth.getUser().then(({ data }) => load(data.user));
     return () => data.subscription.unsubscribe();
   }, []);
 
@@ -62,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loading,
         refresh: async () => {
           const { data } = await supabase.auth.getUser();
-          await load(data.user);
+          await load(data.user, true);
         },
       }}
     >
