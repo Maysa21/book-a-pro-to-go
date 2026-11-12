@@ -64,6 +64,13 @@
       "when": 1794525457584,
       "tag": "0008_bind_business_photo_reads_to_owner",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1794525771228,
+      "tag": "0009_enable_messages_realtime",
+      "breakpoints": true
     }
   ]
 }
