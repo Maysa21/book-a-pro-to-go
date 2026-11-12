@@ -11,5 +11,7 @@
 - [x] Add a self-account management screen with name, phone and password editing.
 - [x] Reorganize Meu espaço for narrow phone screens.
 - [x] Verify authenticated profile editing, reload persistence, restoration, and mobile layouts; run tests.
+- [x] Add an optional Google Maps link in the space address section, validated on save and shown to clients as "Ver no mapa".
+- [x] Verify the link is stored normalized, rejected when it is not a Google Maps link, and rendered on the public page; run maps-link tests and remove the temporary establishment.
 
 Verification limits: password was not changed on the real account. Establishment photo writes were verified with the requesting account's real professional session; the temporary establishment and photos were removed afterward.
