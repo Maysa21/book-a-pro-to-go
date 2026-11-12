@@ -96,11 +96,15 @@ function Index() {
                   </div>
                   <h3 className="mt-4 text-xl font-semibold">{b.name}</h3>
                   <p className="text-sm text-muted-foreground">{b.category}</p>
-                  {b.location && (
+                  {b.location ? (
                     <p className="mt-2 flex items-center gap-1 text-sm text-muted-foreground">
                       <MapPin className="size-3.5" /> {b.location}
                     </p>
-                  )}
+                  ) : b.maps_url ? (
+                    <p className="mt-2 flex items-center gap-1 text-sm text-muted-foreground">
+                      <MapPin className="size-3.5" /> Ver no mapa
+                    </p>
+                  ) : null}
                   <div className="mt-5 flex items-center justify-between">
                     <span className="text-sm">
                       {prices.length ? <>a partir de <strong>{brl(Math.min(...prices))}</strong></> : "Em breve"}

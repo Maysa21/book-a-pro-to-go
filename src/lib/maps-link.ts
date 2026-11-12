@@ -44,3 +44,13 @@ export function safeMapsHref(raw: string | null | undefined): string | null {
     return null;
   }
 }
+
+/** True while the typed text is a Google Maps link (used to route the "Endereço / bairro" field). */
+export function looksLikeMapsLink(raw: string | null | undefined): boolean {
+  return safeMapsHref(raw) !== null;
+}
+
+/** What the single "Endereço / bairro" box shows: the saved link when there is one, otherwise the address text. */
+export function addressFieldValue(location: string | null | undefined, mapsUrl: string | null | undefined): string {
+  return (mapsUrl ?? "").trim() || (location ?? "").trim();
+}

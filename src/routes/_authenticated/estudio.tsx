@@ -14,7 +14,7 @@ import { brl, WEEKDAYS } from "@/lib/slots";
 import { cn } from "@/lib/utils";
 import { BusinessPhoto } from "@/components/BusinessPhoto";
 import { removeBusinessPhoto, uploadBusinessPhoto, validateBusinessPhoto } from "@/lib/business-photos";
-import { parseMapsLink } from "@/lib/maps-link";
+import { addressFieldValue, looksLikeMapsLink, parseMapsLink } from "@/lib/maps-link";
 import { studioNavigation } from "@/lib/studio-navigation";
 
 export const Route = createFileRoute("/_authenticated/estudio")({
@@ -294,23 +294,20 @@ function StudioPage() {
             <Label htmlFor="biz-location">Endereço / bairro</Label>
             <Input
               id="biz-location"
-              value={form.location}
-              onChange={(e) => setForm({ ...form, location: e.target.value })}
-              className="h-11"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="biz-maps">Link do Google Maps (opcional)</Label>
-            <Input
-              id="biz-maps"
-              value={form.maps_url}
-              onChange={(e) => setForm({ ...form, maps_url: e.target.value })}
-              placeholder="https://maps.app.goo.gl/…"
-              inputMode="url"
+              value={addressFieldValue(form.location, form.maps_url)}
+              onChange={(e) => {
+                const text = e.target.value;
+                setForm(
+                  looksLikeMapsLink(text)
+                    ? { ...form, location: "", maps_url: text }
+                    : { ...form, location: text, maps_url: "" },
+                );
+              }}
+              placeholder="Rua das Flores, 10 — ou cole o link do Google Maps"
               className="h-11"
             />
             <p className="text-xs text-muted-foreground">
-              No Google Maps, busque seu espaço, toque em Compartilhar e cole o link aqui.
+              Digite o endereço ou cole o link do Google Maps: busque seu espaço no Maps, toque em Compartilhar e cole aqui.
             </p>
           </div>
           <fieldset className="min-w-0 space-y-3">
