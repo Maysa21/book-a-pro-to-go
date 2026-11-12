@@ -14,6 +14,7 @@ import { brl, WEEKDAYS } from "@/lib/slots";
 import { cn } from "@/lib/utils";
 import { BusinessPhoto } from "@/components/BusinessPhoto";
 import { removeBusinessPhoto, uploadBusinessPhoto, validateBusinessPhoto } from "@/lib/business-photos";
+import { parseMapsLink } from "@/lib/maps-link";
 import { studioNavigation } from "@/lib/studio-navigation";
 
 export const Route = createFileRoute("/_authenticated/estudio")({
@@ -35,6 +36,7 @@ type Biz = {
   name: string;
   category: string;
   location: string;
+  maps_url: string;
   bio: string;
   opens_at: string;
   closes_at: string;
@@ -48,6 +50,7 @@ const empty: Biz = {
   name: "",
   category: "Beleza e estética",
   location: "",
+  maps_url: "",
   bio: "",
   opens_at: "09:00",
   closes_at: "18:00",
@@ -88,7 +91,7 @@ function StudioPage() {
   useEffect(() => {
     if (biz)
       setForm({
-        name: biz.name, category: biz.category, location: biz.location, bio: biz.bio,
+        name: biz.name, category: biz.category, location: biz.location, maps_url: biz.maps_url ?? "", bio: biz.bio,
         opens_at: biz.opens_at.slice(0, 5), closes_at: biz.closes_at.slice(0, 5),
         days: biz.days, slot_interval: biz.slot_interval, emoji: biz.emoji,
         published: biz.published, photo_path: biz.photo_path,
@@ -119,11 +122,18 @@ function StudioPage() {
       return;
     }
     if (!user) return;
+    let mapsUrl: string;
+    try {
+      mapsUrl = parseMapsLink(form.maps_url) ?? "";
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Cole um link do Google Maps válido.");
+      return;
+    }
     setSaving(true);
     let uploaded: string | null = null;
     try {
       if (photo) uploaded = await uploadBusinessPhoto(user.id, photo);
-      const payload = { ...form, photo_path: uploaded ?? form.photo_path, owner_id: user.id };
+      const payload = { ...form, maps_url: mapsUrl, photo_path: uploaded ?? form.photo_path, owner_id: user.id };
       const { error } = biz
         ? await supabase.from("businesses").update(payload).eq("id", biz.id).eq("owner_id", user.id).select("id").single()
         : await supabase.from("businesses").insert(payload).select("id").single();
@@ -288,6 +298,20 @@ function StudioPage() {
               onChange={(e) => setForm({ ...form, location: e.target.value })}
               className="h-11"
             />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="biz-maps">Link do Google Maps (opcional)</Label>
+            <Input
+              id="biz-maps"
+              value={form.maps_url}
+              onChange={(e) => setForm({ ...form, maps_url: e.target.value })}
+              placeholder="https://maps.app.goo.gl/…"
+              inputMode="url"
+              className="h-11"
+            />
+            <p className="text-xs text-muted-foreground">
+              No Google Maps, busque seu espaço, toque em Compartilhar e cole o link aqui.
+            </p>
           </div>
           <fieldset className="min-w-0 space-y-3">
             <legend className="text-sm font-medium">Ícone do espaço</legend>

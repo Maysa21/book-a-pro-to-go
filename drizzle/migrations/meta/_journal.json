@@ -50,6 +50,13 @@
       "when": 1794483651040,
       "tag": "0006_restrict_profile_and_photo_reads",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1794487177076,
+      "tag": "0007_add_business_maps_link",
+      "breakpoints": true
     }
   ]
 }

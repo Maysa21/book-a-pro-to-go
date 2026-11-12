@@ -84,6 +84,7 @@ export type Database = {
           emoji: string
           id: string
           location: string
+          maps_url: string
           name: string
           opens_at: string
           owner_id: string | null
@@ -101,6 +102,7 @@ export type Database = {
           emoji?: string
           id?: string
           location?: string
+          maps_url?: string
           name: string
           opens_at?: string
           owner_id?: string | null
@@ -118,6 +120,7 @@ export type Database = {
           emoji?: string
           id?: string
           location?: string
+          maps_url?: string
           name?: string
           opens_at?: string
           owner_id?: string | null

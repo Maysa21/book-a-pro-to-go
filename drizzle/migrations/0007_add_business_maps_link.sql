@@ -1,0 +1,1 @@
+alter table public.businesses add column if not exists maps_url text not null default '';

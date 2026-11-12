@@ -10,6 +10,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { availableSlots, brl, isoDate, WEEKDAYS } from "@/lib/slots";
 import { cn } from "@/lib/utils";
 import { BusinessPhoto } from "@/components/BusinessPhoto";
+import { safeMapsHref } from "@/lib/maps-link";
 
 export const Route = createFileRoute("/p/$id")({
   head: () => ({
@@ -45,6 +46,7 @@ function BusinessPage() {
   });
   const services = (biz?.services ?? []).filter((s) => s.active);
   const service = services.find((s) => s.id === serviceId) ?? null;
+  const mapHref = safeMapsHref(biz?.maps_url);
 
   const days = useMemo(() => {
     const out: Date[] = [];
@@ -120,6 +122,13 @@ function BusinessPage() {
               <span className="flex items-center gap-1"><Clock className="size-4" /> {biz.opens_at.slice(0, 5)}–{biz.closes_at.slice(0, 5)} · {biz.days.map((d) => WEEKDAYS[d]).join(", ")}</span>
             </div>
             {biz.bio && <p className="mt-3">{biz.bio}</p>}
+            {mapHref && (
+              <Button asChild variant="outline" size="sm" className="mt-3">
+                <a href={mapHref} target="_blank" rel="noopener noreferrer">
+                  <MapPin /> Ver no mapa
+                </a>
+              </Button>
+            )}
           </div>
           {user && role === "client" && biz.owner_id && (
             <Button asChild variant="urgent" size="sm">
