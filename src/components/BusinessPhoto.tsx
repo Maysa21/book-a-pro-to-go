@@ -3,6 +3,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PHOTO_BUCKET } from "@/lib/business-photos";
 import { cn } from "@/lib/utils";
+import { getPublishedPhotoUrl } from "@/lib/business-photo-url.functions";
 
 export function BusinessPhoto({ path, preview, name, emoji, className }: {
   path: string | null; preview?: string | null; name: string; emoji: string; className?: string;
@@ -17,8 +18,9 @@ export function BusinessPhoto({ path, preview, name, emoji, className }: {
     queryFn: async () => {
       if (!path) return null;
       const { data, error } = await supabase.storage.from(PHOTO_BUCKET).createSignedUrl(path, 3600);
-      if (error) throw error;
-      return data.signedUrl;
+      if (!error && data?.signedUrl) return data.signedUrl;
+      const res = await getPublishedPhotoUrl({ data: { path } });
+      return res.url;
     },
   });
   const src = preview || url;
