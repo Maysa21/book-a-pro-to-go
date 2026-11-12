@@ -43,6 +43,13 @@
       "when": 1794355801450,
       "tag": "0005_cleanup_deleted_account_records",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794483651040,
+      "tag": "0006_restrict_profile_and_photo_reads",
+      "breakpoints": true
     }
   ]
 }
